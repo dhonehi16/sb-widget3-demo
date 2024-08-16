@@ -271,7 +271,8 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                 1000: 4,
             },
             limits: {
-                brands: 6
+                brands: 6,
+                offers: 4
             }
         },
         sortVisible: true,
