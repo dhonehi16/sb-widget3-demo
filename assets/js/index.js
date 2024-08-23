@@ -65,7 +65,6 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
             groupCategories: true,
             limitNameChars: 56,
         },
-        // errorImg: 'https://img.goodfon.ru/original/2880x1920/3/4a/mlechnyy-put-kosmos-zvezdy-3734.jpg',
         cartCount: {
             active: true,
             completions: {
@@ -117,8 +116,6 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                     return cart
                 },
                 onChangeOfferCount: async (offer) => {
-                    // await new Promise((resolve) => setTimeout(resolve, 1000))
-
                     if (offer.operationType === 'inc') {
                         cart[offer.id] = offer.currentQuantity + 2
                     } else if (offer.operationType === 'dec') {
@@ -363,26 +360,6 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                     'additionalSort': {'date': {'ASC': 'Сначала старые', 'DESC': 'Сначала новые', 'param': 'Date'}},
                 },
             });
-            // SearchBooster.mount({ selector: '#widget' });
-            // SearchBooster.on('popup-open', (params) => {
-            //     console.log('popup-open');
-            // });
-            // SearchBooster.on('popup-close', (params) => {
-            //     console.log('popup-close');
-            // });
-            // SearchBooster.on('add-to-cart', (offer) => {
-            //     cart[offer.id] = offer.quantity
-            // });
-            // SearchBooster.on('search', (params) => {
-            //     console.log('search', params);
-            // });
-            // SearchBooster.on('completions', (params) => {
-            //     console.log('completions', params);
-            // });
-            // SearchBooster.on('offer-click', (params) => {
-            //     console.log('offer-click', params);
-            // });
-            //console.log('SearchBooster', SearchBooster);
         },
     };
     if (scriptElement) {
