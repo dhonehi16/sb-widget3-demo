@@ -103,11 +103,11 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                 pollingRate: 1000,
                 label: 'В корзину',
                 addToCartConfig: (offer) => {
-                    if (offer.id === '54283') {
+                    if (!offer.available) {
                         return {
                             label: 'Подробнее',
-                            action: (offer) => {
-                                // console.log(offer)
+                            action: () => {
+                                window.location.href = offer.url
                             }
                         }
                     }
@@ -234,6 +234,77 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                             },
                             {
                                 type: 'description'
+                            }
+                        ]
+                    },
+                    {
+                        type: 'info',
+                        child: [
+                            {
+                                type: 'cart'
+                            }
+                        ]
+                    }
+                ],
+                rowMini: [
+                    {
+                        type: 'image',
+                        max: 3,
+                        child: [
+                            {
+                                type: 'favourites',
+                                style: {
+                                    left: '11px',
+                                    top: '12px'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        type: 'content',
+                        child: [
+                            {
+                                type: 'name'
+                            },
+                            {
+                                type: 'row',
+                                child: [
+                                    {
+                                        type: 'price',
+                                        showOldPrice: false
+                                    },
+                                    {
+                                        type: 'cart',
+                                        labelAsCartIcon: true
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                ],
+                columnMini: [
+                    {
+                        type: 'image',
+                        max: 3,
+                        errorImg: '',
+                        child: [
+                            {
+                                type: 'favourites',
+                                style: {
+                                    top: '10px',
+                                    right: '10px'
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        type: 'content',
+                        child: [
+                            {
+                                type: 'price'
+                            },
+                            {
+                                type: 'name'
                             }
                         ]
                     },
