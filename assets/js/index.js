@@ -55,6 +55,22 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                     columnCount: 4
                 }
             },
+            emptyResultsBreakpoints: {
+                0: {
+                    columnCount: 1
+                },
+                600: {
+                    columnCount: 2,
+                    gridGap: 10
+                },
+                850: {
+                    columnCount: 3,
+                    gridGap: 10
+                },
+                950: {
+                    columnCount: 4,
+                },
+            },
         },
         popup: true,
         search: {
@@ -62,9 +78,10 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
             voice: true,
             stateManager: 'hash',
             limit: 36,
-            groupCategories: true,
+            groupCategories: false,
             limitNameChars: 56,
         },
+        // errorImg: 'https://img.goodfon.ru/original/2880x1920/3/4a/mlechnyy-put-kosmos-zvezdy-3734.jpg',
         cartCount: {
             active: true,
             completions: {
@@ -83,6 +100,7 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
             mapper: function (offer, data) {
                 return offer;
             },
+            // minimumFractionDigits: 2,
             currency: 'RUB',
             trackClicks: true,
             favourites: {
@@ -100,7 +118,6 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
             cart: {
                 active: false,
                 pollingRate: 1000,
-                label: 'В корзину',
                 addToCartConfig: (offer) => {
                     if (!offer.available) {
                         return {
@@ -116,7 +133,11 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                     return cart
                 },
                 onChangeOfferCount: async (offer) => {
-                    if (offer.operationType === 'inc') {
+                    // await new Promise((resolve) => setTimeout(resolve, 1000))
+
+                    if (offer.operationType === 'removeAll') {
+                        cart[offer.id] = 0
+                    } else if (offer.operationType === 'inc') {
                         cart[offer.id] = offer.currentQuantity + 2
                     } else if (offer.operationType === 'dec') {
                         cart[offer.id] = offer.currentQuantity - 1
@@ -198,6 +219,7 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                             },
                             {
                                 type: 'labels',
+                                showSale: true,
                                 style: {
                                     left: '6px',
                                     bottom: '6px'
@@ -209,11 +231,12 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                         type: 'content',
                         child: [
                             {
-                                type: 'price'
-                            },
-                            {
                                 type: 'name',
                                 maxLines: 2
+                            },
+                            {
+                                type: 'price',
+                                showSale: false,
                             },
                             {
                                 type: 'additional',
@@ -340,13 +363,16 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
             },
             limits: {
                 brands: 6,
-                offers: 4
+                offers: 4,
             }
         },
         sortVisible: true,
         sortFilters: ['цена', 'категория', 'размер', 'price', 'внешний материал', "category", 'группацвета', 'коллекция'],
         showPopular: true,
         showPopularQueries: true,
+        popularOffersWhenNoResults: {
+            limit: 8,
+        },
         // groupCategories: false,
         // 'additionalSort': {'date': {'ASC': 'Сначала старые', 'DESC': 'Сначала новые', 'param': 'Date'}},
 
@@ -360,7 +386,27 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                     'additionalSort': {'date': {'ASC': 'Сначала старые', 'DESC': 'Сначала новые', 'param': 'Date'}},
                 },
             });
-        },
+            // SearchBooster.mount({ selector: '#widget' });
+            // SearchBooster.on('popup-open', (params) => {
+            //     console.log('popup-open');
+            // });
+            // SearchBooster.on('popup-close', (params) => {
+            //     console.log('popup-close');
+            // });
+            // SearchBooster.on('add-to-cart', (offer) => {
+            //     cart[offer.id] = offer.quantity
+            // });
+            // SearchBooster.on('search', (params) => {
+            //     console.log('search', params);
+            // });
+            // SearchBooster.on('completions', (params) => {
+            //     console.log('completions', params);
+            // });
+            // SearchBooster.on('offer-click', (params) => {
+            //     console.log('offer-click', params);
+            // });
+            //console.log('SearchBooster', SearchBooster);
+        }
     };
     if (scriptElement) {
         var scriptURL = new URL(scriptElement.src);
