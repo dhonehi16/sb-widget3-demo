@@ -33,7 +33,6 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
             },
         },
         layout: {
-            // filterPosition: 'top',
             filterPosition: 'left',
             templateOffer: "grid",
             gridColumnCount: 3,
@@ -79,9 +78,7 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
             stateManager: 'hash',
             limit: 36,
             groupCategories: false,
-            limitNameChars: 56,
         },
-        // errorImg: 'https://img.goodfon.ru/original/2880x1920/3/4a/mlechnyy-put-kosmos-zvezdy-3734.jpg',
         cartCount: {
             active: true,
             completions: {
@@ -91,22 +88,14 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                 count: true
             }
         },
-        features: {
-            ageCheckPopupType: 'asd'
-        },
-        dangerousCategoriesIdList: ['295'],
-        defaultOpenedFilters: 5,
         offer: {
             mapper: function (offer, data) {
                 return offer;
             },
-            // minimumFractionDigits: 2,
-            currency: 'RUB',
             trackClicks: true,
             favourites: {
                 pollingRate: 1000,
                 items: async () => {
-                    await new Promise((resolve) => setTimeout(resolve, 1000));
                     return favourites
                 },
                 onChange: async ({id, isFavourite}) => {
@@ -122,6 +111,7 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                     if (!offer.available) {
                         return {
                             label: 'Подробнее',
+                            icon: 'default',
                             action: () => {
                                 window.location.href = offer.url
                             }
@@ -129,27 +119,22 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                     }
                 },
                 items: async () => {
-                    await new Promise((resolve) => setTimeout(resolve, 1000))
                     return cart
                 },
                 onChangeOfferCount: async (offer) => {
-                    // await new Promise((resolve) => setTimeout(resolve, 1000))
-
                     if (offer.operationType === 'removeAll') {
                         cart[offer.id] = 0
                     } else if (offer.operationType === 'inc') {
-                        cart[offer.id] = offer.currentQuantity + 2
+                        cart[offer.id] = offer.currentQuantity + 1
                     } else if (offer.operationType === 'dec') {
                         cart[offer.id] = offer.currentQuantity - 1
                     } else {
-                        // await new Promise((resolve) => setTimeout(resolve, 1000))
                         cart[offer.id] = 1
                     }
 
                     return cart[offer.id]
                 }
             },
-            errorImg: '',
             layout: {
                 row: [
                     {
@@ -175,14 +160,6 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                             {
                                 type: 'name',
                                 maxLines: 2,
-                            },
-                            {
-                                type: 'additional',
-                                value: 'params.inStock',
-                                label: 'На складе',
-                                visibility(value) {
-                                    console.log(value)
-                                }
                             },
                             {
                                 type: 'reviews'
@@ -237,17 +214,6 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                             {
                                 type: 'price',
                                 showSale: false,
-                            },
-                            {
-                                type: 'additional',
-                                value: 'params.inStock',
-                                label: 'На складе:',
-                                visibility(value) {
-                                    return false
-                                },
-                                valueFormatter(value) {
-                                    return 'asdasd'
-                                }
                             },
                             {
                                 type: 'reviews'
@@ -354,7 +320,6 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
             },
         },
         completionSettings: {
-            // orders: ['popular', 'categories', 'brands', 'offers'],
             breakpoints: {
                 0: 2,
                 500: 2,
@@ -373,9 +338,6 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
         popularOffersWhenNoResults: {
             limit: 8,
         },
-        // groupCategories: false,
-        // 'additionalSort': {'date': {'ASC': 'Сначала старые', 'DESC': 'Сначала новые', 'param': 'Date'}},
-
         skuRegExp: /^\\d{9}$/,
         initialized: function (SearchBooster) {
             SearchBooster.mount({
@@ -386,26 +348,6 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
                     'additionalSort': {'date': {'ASC': 'Сначала старые', 'DESC': 'Сначала новые', 'param': 'Date'}},
                 },
             });
-            // SearchBooster.mount({ selector: '#widget' });
-            // SearchBooster.on('popup-open', (params) => {
-            //     console.log('popup-open');
-            // });
-            // SearchBooster.on('popup-close', (params) => {
-            //     console.log('popup-close');
-            // });
-            // SearchBooster.on('add-to-cart', (offer) => {
-            //     cart[offer.id] = offer.quantity
-            // });
-            // SearchBooster.on('search', (params) => {
-            //     console.log('search', params);
-            // });
-            // SearchBooster.on('completions', (params) => {
-            //     console.log('completions', params);
-            // });
-            // SearchBooster.on('offer-click', (params) => {
-            //     console.log('offer-click', params);
-            // });
-            //console.log('SearchBooster', SearchBooster);
         }
     };
     if (scriptElement) {
@@ -468,8 +410,6 @@ function createScript() {
 
     const scriptEl = document.createElement('script')
     scriptEl.innerHTML = script
-
-    console.log(scriptEl)
 
     document.body.appendChild(scriptEl)
 }
