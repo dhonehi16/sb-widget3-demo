@@ -422,7 +422,11 @@ function onSave() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    createScript();
+    const params = new URLSearchParams(window.location.search)
+    const scriptParam = params.get('script')
 
-    document.querySelector('.app-btn').addEventListener('click', onSave)
+    if (!scriptParam || scriptParam === 'true') {
+        createScript()
+        document.querySelector('.app-btn').addEventListener('click', onSave)
+    }
 })
