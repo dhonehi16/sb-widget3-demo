@@ -7,9 +7,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 })
 
-function initEditor() {
+async function initEditor() {
     document.head.insertAdjacentHTML('beforeend', '<link href="https://cdn.jsdelivr.net/npm/vscode-codicons@0.0.17/dist/codicon.min.css" rel="stylesheet">')
-    document.body.insertAdjacentHTML('beforeend', '<script type="text/javascript" src="https://unpkg.com/monaco-editor@latest/min/vs/loader.js"></script>')
+
+    const script = document.createElement('script')
+
+    script.src = 'https://unpkg.com/monaco-editor@latest/min/vs/loader.js'
+    script.type = 'text/javascript'
+
+    document.body.appendChild(script)
+
+    await new Promise((resolve) => {
+        script.onload = resolve
+    })
 
     require.config({paths: {'vs': 'https://unpkg.com/monaco-editor@latest/min/vs'}});
 
