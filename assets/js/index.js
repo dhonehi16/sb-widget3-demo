@@ -4,8 +4,7 @@ const DEFAULT_SB_SCRIPT = `(function (e, t, n, o) {
         localStorage.removeItem("SEARCHBOOSTER_V2_AB_TEST_SEGMENT_A");
         localStorage.removeItem("SEARCHBOOSTER_V2_AB_TEST_SEGMENT_B");
     }
-    //var cdnUrl = "https://cdn.searchbooster.io/scripts/v3/init.js";
-    var cdnUrl = "http://localhost:9490/v3/init.js";
+    var cdnUrl = "https://cdn.searchbooster.io/scripts/v3/init.js";
     var pathCdnUrl = new URL(cdnUrl).pathname;
     var scriptElement = document.querySelector('[data-sb-init-script]');
     var debug = false;
