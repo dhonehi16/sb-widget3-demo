@@ -1,13 +1,13 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const params = new URLSearchParams(window.location.search)
-    const editorParam = params.get('editor')
+// document.addEventListener('DOMContentLoaded', () => {
+//     const params = new URLSearchParams(window.location.search)
+//     const editorParam = params.get('editor')
+//
+//     if (!editorParam || editorParam === 'true') {
+//         initEditor()
+//     }
+// })
 
-    if (!editorParam || editorParam === 'true') {
-        initEditor()
-    }
-})
-
-async function initEditor() {
+async function initEditor(scriptInner) {
     document.head.insertAdjacentHTML('beforeend', '<link href="https://cdn.jsdelivr.net/npm/vscode-codicons@0.0.17/dist/codicon.min.css" rel="stylesheet">')
 
     const script = document.createElement('script')
@@ -35,7 +35,7 @@ async function initEditor() {
     };
 
     require(["vs/editor/editor.main"], function () {
-        const script = localStorage.getItem('sb-script')
+        const script = scriptInner
 
         window.editor = monaco.editor.create(document.querySelector('.monaco-editor'), {
             value: script,

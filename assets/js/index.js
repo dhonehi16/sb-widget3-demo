@@ -408,10 +408,39 @@ function createScript() {
         script = DEFAULT_SB_SCRIPT
     }
 
-    const scriptEl = document.createElement('script')
-    scriptEl.innerHTML = script
+    return script
+}
 
+function insertSettingsToWindow(script) {
+    const regex = /var\s+settings\s*=\s*({[\s\S]*?};)/g;
+    const match = script.match(regex);
+
+    let settingsScript = match[0].replace(/var\s+settings\s*=/, '')
+    settingsScript = `window.settings = ${settingsScript}`
+
+    const scriptEl = document.createElement('script')
+    scriptEl.innerHTML = settingsScript
     document.body.appendChild(scriptEl)
+}
+
+function overrideScript({settings, script, cdnUrl}) {
+    let newScript = script
+
+    if (settings) {
+        const mergedSettings = mergeObjects(window.settings, settings)
+
+        newScript = script.replace(
+            /var\s+settings\s*=\s*({[\s\S]*?};)/g,
+            `var settings = ${objectToString(mergedSettings, 1)};`
+        )
+    }
+
+    if (cdnUrl) {
+        const match = newScript.match(/var\s+cdnUrl\s*=\s*([^;]*)/)
+        newScript = newScript.replace(match[1], cdnUrl)
+    }
+
+    return newScript
 }
 
 function onSave() {
@@ -424,9 +453,30 @@ function onSave() {
 document.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search)
     const scriptParam = params.get('script')
+    const editorParam = params.get('editor')
+    const cdnUrl = params.get('cdnUrl')
+    let settings = params.get('settings')
+
+    let script = createScript()
 
     if (!scriptParam || scriptParam === 'true') {
-        createScript()
+        if (settings || cdnUrl) {
+            if (settings) {
+                insertSettingsToWindow(script)
+                settings = JSON.parse(settings)
+            }
+
+            script = overrideScript({settings, script, cdnUrl})
+        }
+
+        const scriptEl = document.createElement('script')
+        scriptEl.innerHTML = script
+
+        document.body.appendChild(scriptEl)
         document.querySelector('.app-btn').addEventListener('click', onSave)
+    }
+
+    if (!editorParam || editorParam === 'true') {
+        initEditor(script)
     }
 })
