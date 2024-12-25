@@ -437,7 +437,7 @@ function overrideScript({settings, script, cdnUrl}) {
 
     if (cdnUrl) {
         const match = newScript.match(/var\s+cdnUrl\s*=\s*([^;]*)/)
-        newScript = newScript.replace(match[1], cdnUrl)
+        newScript = newScript.replace(match[1], `"${cdnUrl}"`)
     }
 
     return newScript
